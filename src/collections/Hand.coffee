@@ -13,11 +13,8 @@ class window.Hand extends Backbone.Collection
   stand: ->
     @trigger 'stand'
 
-
   # bust
   # trigger bust
-
-
 
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1
