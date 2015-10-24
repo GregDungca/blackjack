@@ -4,27 +4,19 @@ class window.Game extends Backbone.Model
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
     @get('playerHand').on('stand', @calculateGameOutcome, @)
+    # listen for bust and when we hear it, we set outcome to lose
+    @get('playerHand').on('bust', (-> @set(outcome : 'lose', playerWinnings : 0)), @)
+    @get('dealerHand')..flip
 
   calculateGameOutcome: ->
     #debugger
     #@get('dealerHand').model.flip()
+
     # calculate player score :
-    if @get('playerHand').hasAce() == 1
-      if @get('playerHand').scores()[1] <= 21
-        playerScore = @get('playerHand').scores()[1]
-      else 
-        playerScore = @get('playerHand').scores()[0]
-    else
-      playerScore = @get('playerHand').scores()[0]
+    playerScore = @calculateScore('playerHand')
 
     # calculate dealer score :
-    if @get('dealerHand').hasAce() == 1
-      if @get('dealerHand').scores()[1] <= 21
-        dealerScore = @get('dealerHand').scores()[1]
-      else 
-        dealerScore = @get('dealerHand').scores()[0]
-    else
-      dealerScore = @get('dealerHand').scores()[0]
+    dealerScore = @calculateScore('dealerHand')
 
     # calculate who wins
     if playerScore > dealerScore && playerScore <= 21
@@ -44,6 +36,16 @@ class window.Game extends Backbone.Model
     else if @get('outcome') == 'tie' then @set('playerWinnings', @get('playerBet'))
 
     else @set('playerWinnings', 0)
+
+  calculateScore: (userHand) ->
+    if @get(userHand).hasAce() == 1
+      if @get(userHand).scores()[1] <= 21
+        return @get(userHand).scores()[1]
+      else 
+        return @get(userHand).scores()[0]
+    else
+      @get(userHand).scores()[0]
+
 
 
 

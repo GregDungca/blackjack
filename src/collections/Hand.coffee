@@ -6,12 +6,18 @@ class window.Hand extends Backbone.Collection
   hit: ->
     @add(@deck.pop())
     @last() #do we need this?
+    if @scores()[0] > 21
+      @trigger 'bust'
+
+
 
   # stand
   # trigger stand
 
   stand: ->
+    # @.at(0).flip()
     @trigger 'stand'
+
 
   # bust
   # trigger bust
