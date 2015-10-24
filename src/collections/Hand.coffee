@@ -5,7 +5,18 @@ class window.Hand extends Backbone.Collection
 
   hit: ->
     @add(@deck.pop())
-    @last()
+    @last() #do we need this?
+
+  # stand
+  # trigger stand
+
+  stand: ->
+    @trigger 'stand'
+
+
+  # bust
+  # trigger bust
+
 
 
   hasAce: -> @reduce (memo, card) ->
